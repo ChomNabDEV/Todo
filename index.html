@@ -5,38 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
       body {
         font-family: JetBrains Mono Medium;
+        padding: 5px;
+        background-color: black;
+        color: white;
       }
-      input,
-      button {
+      .inputCtrl {
+        display: flex;
+        gap: 20px;
+      }
+      .inputCtrl > #inDate {
+        width: 35%;
+      }
+      input {
         padding: 10px;
+        width: 100%;
       }
       button {
         cursor: pointer;
-        background-color: blueviolet;
+        background-color: rgb(47, 255, 20);
         border: none;
-        color: white;
+        color: rgb(0, 0, 0);
         border-radius: 4px;
         margin: 5px 0px;
+        padding: 10px;
       }
       .Todo {
-        background-color: red;
+        background-color: rgb(28, 79, 206);
         padding: 8px;
         border-radius: 4px;
         color: white;
+      }
+      fieldset {
+        padding: 5px 10px;
+      }
+      #Result {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        margin: 0;
       }
     </style>
   </head>
   <body>
     <h1>My to do list...</h1>
-    <input type="date" id="inDate" placeholder="Date" />
-    <input
-      type="text"
-      id="inTodo"
-      placeholder="what you want to do ?"
-      required
-    />
+    <div class="inputCtrl">
+      <input type="date" id="inDate" placeholder="Date" />
+      <input
+        type="text"
+        id="inTodo"
+        placeholder="what you want to do ?"
+        required
+      />
+    </div>
+
     <br />
     <button type="button" id="btnInsert">Add</button>
     <button type="button" id="btnclearData">Clear</button>
@@ -55,10 +83,10 @@
         const MyTodo = inTodo.value;
         const MyDate = inDate.value;
         if (MyDate === "") {
-          alert("Please Enter a Todo");
+          alert("Please select a date");
           return;
         } else if (MyTodo === "") {
-          alert("Please select a date");
+          alert("Please Enter a Todo");
           return;
         } else {
           localStorage.setItem(MyDate, MyTodo);
