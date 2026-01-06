@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        font-family: JetBrains Mono Medium;
+      }
+      input,
+      button {
+        padding: 10px;
+      }
+      button {
+        cursor: pointer;
+        background-color: blueviolet;
+        border: none;
+        color: white;
+        border-radius: 4px;
+        margin: 5px 0px;
+      }
+      .Todo {
+        background-color: red;
+        padding: 8px;
+        border-radius: 4px;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>My to do list...</h1>
+    <input type="date" id="inDate" placeholder="Date" />
+    <input
+      type="text"
+      id="inTodo"
+      placeholder="what you want to do ?"
+      required
+    />
+    <br />
+    <button type="button" id="btnInsert">Add</button>
+    <button type="button" id="btnclearData">Clear</button>
+    <fieldset>
+      <legend>Result</legend>
+      <div id="Result"></div>
+    </fieldset>
+
+    <script>
+      const inTodo = document.getElementById("inTodo");
+      const inDate = document.getElementById("inDate");
+      const btnInsert = document.getElementById("btnInsert");
+      const btnclearData = document.getElementById("btnclearData");
+
+      btnInsert.addEventListener("click", () => {
+        const MyTodo = inTodo.value;
+        const MyDate = inDate.value;
+        if (MyDate === "") {
+          alert("Please Enter a Todo");
+          return;
+        } else if (MyTodo === "") {
+          alert("Please select a date");
+          return;
+        } else {
+          localStorage.setItem(MyDate, MyTodo);
+          console.log(localStorage);
+          location.reload();
+        }
+      });
+
+      for (let g = 0; g < localStorage.length; g++) {
+        const key = localStorage.key(g);
+        const todo = localStorage.getItem(key);
+        Result.innerHTML += `<div class="Todo"> No ${
+          g + 1
+        } | ${key}  : ${todo} </div><br>`;
+
+        btnclearData.addEventListener("click", () => {
+          localStorage.removeItem(key, todo);
+          location.reload();
+        });
+      }
+    </script>
+  </body>
+</html>
