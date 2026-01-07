@@ -41,6 +41,9 @@
         padding: 8px;
         border-radius: 4px;
         color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
       fieldset {
         padding: 5px 10px;
@@ -78,35 +81,69 @@
       const inDate = document.getElementById("inDate");
       const btnInsert = document.getElementById("btnInsert");
       const btnclearData = document.getElementById("btnclearData");
+      const Result = document.getElementById("Result");
 
+      // ---------- JSON helpers ----------
+      function getTodos() {
+        return JSON.parse(localStorage.getItem("todos")) || {};
+      }
+
+      function saveTodos(todos) {
+        localStorage.setItem("todos", JSON.stringify(todos));
+      }
+
+      // ---------- Add Todo ----------
       btnInsert.addEventListener("click", () => {
-        const MyTodo = inTodo.value;
-        const MyDate = inDate.value;
-        if (MyDate === "") {
+        const text = inTodo.value.trim();
+        const date = inDate.value;
+
+        if (!date) {
           alert("Please select a date");
           return;
-        } else if (MyTodo === "") {
-          alert("Please Enter a Todo");
-          return;
-        } else {
-          localStorage.setItem(MyDate, MyTodo);
-          console.log(localStorage);
-          location.reload();
         }
+        if (!text) {
+          alert("Please enter a todo");
+          return;
+        }
+
+        const todos = getTodos();
+        const id = Date.now(); // unique ID
+
+        todos[id] = {
+          text: text,
+          date: date,
+          completed: false,
+        };
+
+        saveTodos(todos);
+        location.reload();
       });
 
-      for (let g = 0; g < localStorage.length; g++) {
-        const key = localStorage.key(g);
-        const todo = localStorage.getItem(key);
-        Result.innerHTML += `<div class="Todo"> No ${
-          g + 1
-        } | ${key}  : ${todo} </div><br>`;
+      // ---------- Render Todos ----------
+      const todos = getTodos();
 
-        btnclearData.addEventListener("click", () => {
-          localStorage.removeItem(key, todo);
-          location.reload();
-        });
+      Object.entries(todos).forEach(([id, todo], index) => {
+        Result.innerHTML += `
+      <div class="Todo">
+        No ${index + 1} | ${todo.date} : ${todo.text}
+        <button onclick="removeTodo('${id}')">Remove</button>
+      </div><br>
+    `;
+      });
+
+      // ---------- Remove Single Todo ----------
+      function removeTodo(id) {
+        const todos = getTodos();
+        delete todos[id];
+        saveTodos(todos);
+        location.reload();
       }
+
+      // ---------- Clear All ----------
+      btnclearData.addEventListener("click", () => {
+        localStorage.removeItem("todos");
+        location.reload();
+      });
     </script>
   </body>
 </html>
